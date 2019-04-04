@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+p{
+  text-indent:2em;
+  font-family: Comic Sans MS;
+  font-style: oblique;
+  font-size: 24px
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>6. Display Posts</title>
+</head>
+<body>
+    <br>
+    <form action="ViewUserPosts.php" method="post">
+      <?php
+        $servername = "mysql.eecs.ku.edu";
+        $username = "x398d159";
+        $password = "au9eeWoh";
+        $mysqli = new mysqli($servername, $username, $password, $username);
+
+        /* check connection */
+        if ($mysqli->connect_errno) {
+          printf("Connect failed: %s\n", $mysqli->connect_error);
+          exit();
+        }
+
+        $query = "SELECT * FROM Users";
+        $result = $mysqli->query($query);
+        if($result->num_rows == 0){
+          echo "We have no posts yet.";
+        }
+        else{
+      ?>
+      <select name ="user_id">
+      <?php
+        while ($row = $result->fetch_assoc()) {
+      ?>
+        <option type = "text" value="<?php echo $row["user_id"]; ?>">
+          <?php
+            echo $row["user_id"]; 
+          ?>
+        </option>
+      <?php } ?>
+      </select>
+      <br>
+      <input type="submit">
+      <?php } $mysqli->close(); ?>
+      <br>
+    </form>
+</body>
+</html>
