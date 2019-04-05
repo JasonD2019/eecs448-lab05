@@ -13,31 +13,32 @@ h1{
     <title>7.Result</title>
   </head>
   <body>
-    <h1>7.Result</h1>
+    <h1>Result:</h1>
     <?php
-      $user_content = $_POST["delete"];
+    	$checkbox = $_POST["checkbox"];
+    	$mysqli = new mysqli("mysql.eecs.ku.edu", "x398d159", "au9eeWoh", "x398d159");
 
-      $servername = "mysql.eecs.ku.edu";
-      $username = "x398d159";
-      $password = "au9eeWoh";
-      $mysqli = new mysqli($servername, $username, $password, $username);
+    	if ($mysqli->connect_errno)
+    	{
+    		printf("Connect failed: %s\n", $mysqli->connect_error);
+    		exit();
+    	}
 
-      $query = "SELECT * FROM Posts WHERE content = '$user_content'";
-      $result = $mysqli->query($query);
-      $row = $result->fetch_assoc();
-      $user = $row["author_id"];
-      $query2 = "SELECT * FROM Posts WHERE author_id = '$user'";
-      $result2 = $mysqli->query($query2);
-
-      $conn = new PDO("mysql:host=$servername;dbname=$username", $username, $password);
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $sql = "DELETE FROM Posts WHERE content = '$user_content'";
-      $conn->exec($sql);
-      echo "delete successfully";
-
-      $conn = null;
-      $mysqli->close();
+    	foreach($checkbox as $post_ID)
+    	{
+    		$query = "DELETE FROM Posts WHERE post_id = '" . $post_ID  . "'";
+    		if($mysqli->query($query))
+    		{
+    			echo "<p>No." . $post_ID . " has been delete successfully.</p>";
+    		}
+    		else
+    		{
+    			echo "<p>Something Wrong.</p>";
+    		}
+    	}
+    	$mysqli->close();
     ?>
+
     <br>
   </body>
 </html>
